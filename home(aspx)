@@ -1,0 +1,169 @@
+<%@ Page Title="" Language="C#" MasterPageFile="~/home.Master" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="result.WebForm1" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+ 
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #343a40;
+            padding: 20px;
+            color: #fff;
+            height: 100vh;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ccc;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #495057;
+            color: #fff;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+        }
+
+        .header {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            width: calc(33.333% - 40px);
+            box-sizing: border-box;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card h3 {
+            margin: 0;
+            font-size: 36px;
+            color: #007bff;
+        }
+
+        .dashboard-card p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .dashboard-card a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .dashboard-card a:hover {
+            text-decoration: underline;
+        }
+
+        .dashboard-card i {
+            font-size: 48px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fa fa-book"></i> Course</a></li>
+                <li><a href="#"><i class="fa fa-bookmark"></i> Subject</a></li>
+                <li><a href="#"><i class="fa fa-user-plus"></i> Register</a></li>
+                <li><a href="#"><i class="fa fa-users"></i> View Students</a></li>
+                <li><a href="#"><i class="fa fa-chalkboard-teacher"></i> Faculty</a></li>
+                <li><a href="#"><i class="fa fa-key"></i> Change Password</a></li>
+                <li><a href="#"><i class="fa fa-user"></i> Admin Profile</a></li>
+                <li><a href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div class="dashboard">
+                <div class="dashboard-card">
+                    <i class="fa fa-book"></i>
+                    <h3>5</h3>
+                    <p>Listed Courses</p>
+                    <a href="#">View Details</a>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fa fa-bookmark"></i>
+                    <h3>4</h3>
+                    <p>Subjects</p>
+                    <a href="#">Course Wise Subjects</a>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fa fa-users"></i>
+                    <h3>3</h3>
+                    <p>Total Students</p>
+                    <a href="#">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+</asp:Content>
