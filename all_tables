@@ -1,0 +1,93 @@
+CREATE TABLE [dbo].[course] (
+    [course_id]       INT           NOT NULL,
+    [course_code]     NVARCHAR (50) NULL,
+    [course_name]     NVARCHAR (50) NULL,
+    [course_semester] INT           NULL,
+    [year]            INT           NULL,
+    [course_credits]  INT           NULL,
+    PRIMARY KEY CLUSTERED ([course_id] ASC)
+);
+
+CREATE TABLE [dbo].[result] (
+    [result_id]     INT           NOT NULL,
+    [assessment_id] INT           NULL,
+    [stud_id]       INT           NULL,
+    [score]         INT           NULL,
+    [grade]         NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([result_id] ASC),
+    CONSTRAINT [fk5] FOREIGN KEY ([assessment_id]) REFERENCES [dbo].[assessment] ([assessment_id]),
+    CONSTRAINT [fk4] FOREIGN KEY ([stud_id]) REFERENCES [dbo].[student] ([stud_id])
+);
+
+CREATE TABLE [dbo].[notification] (
+    [notification_id]   INT            NOT NULL,
+    [message]           NVARCHAR (MAX) NULL,
+    [notification_type] NVARCHAR (50)  NULL,
+    [sent_at]           NVARCHAR (50)  NULL,
+    PRIMARY KEY CLUSTERED ([notification_id] ASC)
+);
+
+CREATE TABLE [dbo].[feedback] (
+    [feedback_id]   INT           NOT NULL,
+    [feedback_type] NVARCHAR (50) NULL,
+    [feedback_text] NVARCHAR (50) NULL,
+    [submitted_at]  NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([feedback_id] ASC)
+);
+
+CREATE TABLE [dbo].[faculty] (
+    [faculty_Id]        INT           IDENTITY (1, 1) NOT NULL,
+    [faculty_username]  NVARCHAR (50) NULL,
+    [faculty_password]  NVARCHAR (50) NULL,
+    [faculty_email]     NVARCHAR (50) NULL,
+    [faculty_firstname] NVARCHAR (50) NULL,
+    [faculty_lastname]  NVARCHAR (50) NULL,
+    [faculty_dep]       NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([faculty_Id] ASC)
+);
+
+CREATE TABLE [dbo].[enrollment] (
+    [enroll_id]   INT  NOT NULL,
+    [stud_id]     INT  NULL,
+    [course_id]   INT  NULL,
+    [enroll_date] DATE NULL,
+    PRIMARY KEY CLUSTERED ([enroll_id] ASC),
+    CONSTRAINT [fk1] FOREIGN KEY ([stud_id]) REFERENCES [dbo].[student] ([stud_id]),
+    CONSTRAINT [fk2] FOREIGN KEY ([course_id]) REFERENCES [dbo].[course] ([course_id])
+);
+
+CREATE TABLE [dbo].[assessment] (
+    [assessment_id]     INT           NOT NULL,
+    [course_id]         INT           NULL,
+    [assessment_type]   NVARCHAR (50) NULL,
+    [assessment_name]   NVARCHAR (50) NULL,
+    [assessment_date]   DATE          NULL,
+    [weight_percentage] INT           NULL,
+    PRIMARY KEY CLUSTERED ([assessment_id] ASC),
+    CONSTRAINT [fk3] FOREIGN KEY ([course_id]) REFERENCES [dbo].[course] ([course_id])
+);
+
+CREATE TABLE [dbo].[student] (
+    [stud_id]          INT           IDENTITY (1, 1) NOT NULL,
+    [stud_username]    NVARCHAR (50) NULL,
+    [stud_email]       NVARCHAR (50) NULL,
+    [stud_password]    NVARCHAR (50) NULL,
+    [stud_enroll_date] DATE          NULL,
+    [stud_firstname]   NVARCHAR (50) NULL,
+    [stud_lastname]    NVARCHAR (50) NULL,
+    [stud_dob]         DATE          NULL,
+    CONSTRAINT [PK_student] PRIMARY KEY CLUSTERED ([stud_id] ASC)
+);
+
+CREATE TABLE [dbo].[transcript] (
+    [transcript_it] INT           NOT NULL,
+    [stud_id]       INT           NULL,
+    [course_id]     INT           NULL,
+    [semester]      INT           NULL,
+    [year]          INT           NULL,
+    [final_grade]   NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([transcript_it] ASC),
+    CONSTRAINT [fk6] FOREIGN KEY ([stud_id]) REFERENCES [dbo].[student] ([stud_id]),
+    CONSTRAINT [fk7] FOREIGN KEY ([course_id]) REFERENCES [dbo].[course] ([course_id])
+);
+
