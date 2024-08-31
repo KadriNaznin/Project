@@ -15,8 +15,10 @@ namespace result
     {
         SqlConnection conn;
         SqlCommand cmd;
+        SqlDataAdapter sda;
         protected void Page_Load(object sender, EventArgs e)
         {
+            fnbinddep();
             if (!Page.IsPostBack)
             {
 
@@ -41,21 +43,48 @@ namespace result
             }
         }
 
+
+        protected void fnbinddep()
+        {
+            try
+            {
+                fn_ConnectDB();
+                String qry = "select faculty_dep from faculty";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
+                sda = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                sda.Fill(ds);
+                ddldept.DataSource = ds;
+                ddldept.DataTextField = "faculty_dep";
+                ddldept.DataValueField = "faculty_dep";
+                ddldept.DataBind();
+
+                ddldept.Items.Insert(0, new ListItem("SELECT DEPARTMENT"));
+                conn.Close();
+
+            }
+            catch (Exception e)
+            {
+                Response.Write(e.ToString());
+            }
+        }
         protected void btn_reg_Click(object sender, EventArgs e)
         {
             try
             {
                 fn_ConnectDB();
                 string qry = "INSERT INTO faculty(faculty_username,faculty_password,faculty_email,faculty_firstname,faculty_lastname,faculty_dep) VALUES(@faculty_username,@faculty_password,@faculty_email,@faculty_firstname,@faculty_lastname,@faculty_dep)";
-                cmd= new SqlCommand(qry, conn);
+                cmd = new SqlCommand(qry, conn);
                 cmd.Parameters.AddWithValue("faculty_username", txtname.Text);
                 cmd.Parameters.AddWithValue("faculty_password", txtpass.Text);
                 cmd.Parameters.AddWithValue("faculty_email", txtemail.Text);
-                cmd.Parameters.AddWithValue("faculty_firstname",txtfirstname.Text);
+                cmd.Parameters.AddWithValue("faculty_firstname", txtfirstname.Text);
                 cmd.Parameters.AddWithValue("faculty_lastname", txtlastname.Text);
                 cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
+               
 
-                int res =cmd.ExecuteNonQuery();
+                int res = cmd.ExecuteNonQuery();
                 if (res > 0)
                 {
                     lblMsg.Text = "Inserted successfully";
