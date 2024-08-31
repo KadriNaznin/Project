@@ -2,57 +2,157 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
 
         .container {
             display: flex;
+            min-height: 100vh;
+            background-color: #e9ecef;
         }
 
         .sidebar {
-            width: 20%;
+            width: 250px;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-color: #2c3e50;
+            color: #fff;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: #ecf0f1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            color: #3498db;
         }
 
         .main-content {
-            width: 80%;
-            padding: 20px;
+            flex: 1;
+            padding: 30px;
+            background-color: #fff;
+            margin-left: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 2em;
         }
 
         .card {
             background-color: #fff;
             padding: 20px;
             margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
         }
 
         .card-body {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
 
         .card-body > div {
+            flex: 1;
             text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .card-body > div:last-child {
+            margin-right: 0;
         }
 
         .card-body > div > i {
-            font-size: 2em;
-            color: #333;
+            font-size: 3em;
+            color: #3498db;
         }
 
         .card-body > div > span {
-            font-size: 1.5em;
-            color: #333;
+            display: block;
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+
+        .card-body > div > span:last-child {
+            font-size: 1em;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                box-shadow: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .card-body {
+                flex-direction: column;
+            }
+
+            .card-body > div {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .card-body > div:last-child {
+                margin-bottom: 0;
+            }
         }
     </style>
 </head>
@@ -61,15 +161,15 @@
         <div class="sidebar">
             <h3>Student Management System</h3>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Course</a></li>
-                <li><a href="#">Subject</a></li>
-                <li><a href="#">Register</a></li>
-                <li><a href="#">View Students</a></li>
-                <li><a href="#">Session</a></li>
-                <li><a href="#">Change Password</a></li>
-                <li><a href="#">Admin Profile</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-book"></i> Course</a></li>
+                <li><a href="#"><i class="fas fa-list-alt"></i> Subject</a></li>
+                <li><a href="#"><i class="fas fa-user-plus"></i> Register</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> View Students</a></li>
+                <li><a href="#"><i class="fas fa-calendar-alt"></i> Session</a></li>
+                <li><a href="#"><i class="fas fa-key"></i> Change Password</a></li>
+                <li><a href="#"><i class="fas fa-user-cog"></i> Admin Profile</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
         <div class="main-content">
