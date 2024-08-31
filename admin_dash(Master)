@@ -1,0 +1,33 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="admin_dash.master.cs" Inherits="result.admin_dash" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <div class="sidebar">
+                <h3>Admin Dashboard</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Course</a></li>
+                    <li><a href="#"><i class="fa fa-book fa-fw"></i> Subject</a></li>
+                    <li><a href="#"><i class="fa fa-user-plus"></i> Register</a></li>
+                    <li><a href="#"><i class="fa fa-users"></i> View Students</a></li>
+                    <li><a href="#"><i class="fa fa-vcard"></i> Faculty</a></li>
+                    <li><a href="#"><i class="fa fa-unlock-alt"></i> Change Password</a></li>
+                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
