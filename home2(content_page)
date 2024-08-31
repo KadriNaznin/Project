@@ -1,0 +1,162 @@
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin_dash.Master" AutoEventWireup="true" CodeBehind="home2.aspx.cs" Inherits="result.WebForm2" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 1.5em;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ffffff;
+            background-color: #495057;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .main-content {
+            margin-left: 190px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-size: 1.5em;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-item {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-item i {
+            font-size: 2em;
+            color: #007bff;
+            margin-right: 10px;
+        }
+
+        .card-item h4 {
+            margin: 0;
+            color: #333;
+        }
+
+        .card-item p {
+            margin: 5px 0;
+            color: #6c757d;
+        }
+
+        .notification {
+            padding: 15px;
+            background-color: #fff3cd;
+            border-left: 5px solid #ffeeba;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification i {
+            font-size: 2em;
+            color: #856404;
+            margin-right: 15px;
+        }
+
+        .notification p {
+            margin: 0;
+            color: #856404;
+        }
+    </style>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <div class="main-content">
+        <h2>Welcome to Your Dashboard</h2>
+
+        <div class="notification">
+            <i class="fas fa-bell"></i>
+            <p>New updates are available! Check the latest notifications.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Recent Activities</div>
+            <div class="card-body">
+                <div class="card-item">
+                    <i class="fas fa-user-check"></i>
+                    <h4>New User Registrations</h4>
+                    <p>5 new users signed up today.</p>
+                </div>
+                <div class="card-item">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h4>Unread Messages</h4>
+                    <p>You have 3 unread messages.</p>
+                </div>
+                <div class="card-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <h4>Upcoming Events</h4>
+                    <p>2 events are scheduled for this week.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Content>
