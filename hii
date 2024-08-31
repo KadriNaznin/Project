@@ -1,6 +1,128 @@
-hii naznin
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-hii zariaab 
+        .container {
+            display: flex;
+        }
 
-Meko zariaab ne itna hi code copy krne k liye kaha isliye yahi files upload ki h meine.....  THANK YOU :) 
-bohot aacha kaam kara tume mera hukum siraakho pe rakha bohot badi baat h😂😂😂😂
+        .sidebar {
+            width: 20%;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .card-body > div {
+            text-align: center;
+        }
+
+        .card-body > div > i {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .card-body > div > span {
+            font-size: 1.5em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Student Management System</h3>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Course</a></li>
+                <li><a href="#">Subject</a></li>
+                <li><a href="#">Register</a></li>
+                <li><a href="#">View Students</a></li>
+                <li><a href="#">Session</a></li>
+                <li><a href="#">Change Password</a></li>
+                <li><a href="#">Admin Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h2>Welcome Admin</h2>
+            <div class="card">
+                <div class="card-header">Add Course</div>
+                <div class="card-body">
+                    <div>
+                        <i class="fas fa-file"></i>
+                        <span>View Details</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-book"></i>
+                        <span>5</span>
+                        <span>Listed Courses</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-book-open"></i>
+                        <span>4</span>
+                        <span>Subjects</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-users"></i>
+                        <span>3</span>
+                        <span>Total Students</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Add Subjects</div>
+                <div class="card-body">
+                    <div>
+                        <i class="fas fa-globe"></i>
+                        <span>246</span>
+                        <span>Listed Countries</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-file"></i>
+                        <span>Courses Wise Subjects</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>4119</span>
+                        <span>Listed States</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-city"></i>
+                        <span>47576</span>
+                        <span>Listed Cities</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
