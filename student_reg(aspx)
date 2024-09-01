@@ -4,160 +4,169 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Student Registration</title>
+   
     <style type="text/css">
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f4f7fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: auto; /* Allow scrolling */
-        }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f4f7fa;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: auto; /* Allow scrolling */
+    }
 
+    .container {
+        width: 100%;
+        max-width: 500px; /* Maximum width for larger screens */
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-sizing: border-box;
+        margin: 20px; /* Margin to avoid touching screen edges */
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group select,
+    .form-group .aspNet-Calendar {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="password"]:focus,
+    .form-group select:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    }
+
+    .form-group button {
+        background-color: #007bff;
+        border: none;
+        color: #ffffff;
+        padding: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .form-group button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .form-group .aspNet-Calendar {
+        display: block;
+        margin-top: 10px;
+        padding: 5px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .form-group .aspNet-Calendar table {
+        width: 100%;
+    }
+
+    .form-group .aspNet-Calendar td,
+    .form-group .aspNet-Calendar th {
+        text-align: center;
+    }
+
+    .text-danger {
+        color: #e74c3c; /* Red color for error messages */
+        font-size: 13px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .container {
-            width: 100%;
-            max-width: 500px; /* Maximum width for larger screens */
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            box-sizing: border-box;
-            margin: 20px; /* Margin to avoid touching screen edges */
+            padding: 15px;
         }
 
         h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
+            font-size: 20px;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
+            font-size: 13px;
         }
 
         .form-group input[type="text"],
         .form-group input[type="password"],
-        .form-group select,
-        .form-group .aspNet-Calendar {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-group input[type="text"]:focus,
-        .form-group input[type="password"]:focus,
-        .form-group select:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+        .form-group select {
+            font-size: 13px;
         }
 
         .form-group button {
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
-            padding: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 10px;
         }
 
-        .form-group button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
+        .container {
+            padding: 15px;
+            margin: 10px;
         }
 
-        .form-group .aspNet-Calendar {
-            display: block;
-            margin-top: 10px;
-            padding: 5px;
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        h2 {
+            font-size: 18px;
         }
 
-        .form-group .aspNet-Calendar table {
-            width: 100%;
+        .form-group label {
+            font-size: 12px;
         }
 
-        .form-group .aspNet-Calendar td,
-        .form-group .aspNet-Calendar th {
-            text-align: center;
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group select {
+            font-size: 12px;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h2 {
-                font-size: 20px;
-            }
-
-            .form-group label {
-                font-size: 13px;
-            }
-
-            .form-group input[type="text"],
-            .form-group input[type="password"],
-            .form-group select {
-                font-size: 13px;
-            }
-
-            .form-group button {
-                font-size: 15px;
-            }
+        .form-group button {
+            font-size: 14px;
         }
+    }
+</style>
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-                margin: 10px;
-            }
-
-            h2 {
-                font-size: 18px;
-            }
-
-            .form-group label {
-                font-size: 12px;
-            }
-
-            .form-group input[type="text"],
-            .form-group input[type="password"],
-            .form-group select {
-                font-size: 12px;
-            }
-
-            .form-group button {
-                font-size: 14px;
-            }
-        }
-    </style>
 </head>
 <body>
     <form id="form1" runat="server">
