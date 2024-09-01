@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="faculty_reg.aspx.cs" Inherits="result.faculty_reg" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="facultyreg.aspx.cs" Inherits="result.facultyreg" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
