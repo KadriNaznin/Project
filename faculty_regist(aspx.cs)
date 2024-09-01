@@ -11,14 +11,14 @@ using System.Data.SqlClient;
 
 namespace result
 {
-    public partial class facultyreg : System.Web.UI.Page
+    public partial class student_reg : System.Web.UI.Page
     {
         SqlConnection conn;
         SqlCommand cmd;
         SqlDataAdapter sda;
         protected void Page_Load(object sender, EventArgs e)
         {
-            fnbinddep();
+            
             if (!Page.IsPostBack)
             {
 
@@ -44,69 +44,22 @@ namespace result
         }
 
 
-        //protected void fnbinddep()
-        //{
-        //    try
-        //    {
-        //        fn_ConnectDB();
-        //        String qry = "select faculty_dep from faculty";
-        //        cmd = new SqlCommand(qry, conn);
-        //        cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
-        //        sda = new SqlDataAdapter(cmd);
-        //        DataSet ds = new DataSet();
-        //        sda.Fill(ds);
-        //        ddldept.DataSource = ds;
-        //        ddldept.DataTextField = "faculty_dep";
-        //        ddldept.DataValueField = "faculty_dep";
-        //        ddldept.DataBind();
-
-        //        ddldept.Items.Insert(0, new ListItem("SELECT DEPARTMENT"));
-        //        conn.Close();
-       
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Response.Write(e.ToString());
-        //    }
-        //}
-         
-
-        protected void fnbinddep()
-        {
-            try
-            {
-                ddldept.Items.Add("select department");
-                ddldept.Items.Add("IT");
-                ddldept.Items.Add("CS");
-                ddldept.Items.Add("MB");
-                ddldept.Items.Add("BT");
-                ddldept.Items.Add("CHEM");
-                ddldept.Items.Add("ES");
-
-            }
-            catch (Exception e)
-            {
-                Response.Write(e.ToString());
-
-            }
-
-
-        }
-
 
         protected void btn_reg_Click(object sender, EventArgs e)
         {
             try
             {
                 fn_ConnectDB();
-                string qry = "INSERT INTO faculty(faculty_username,faculty_password,faculty_email,faculty_firstname,faculty_lastname,faculty_dep) VALUES(@faculty_username,@faculty_password,@faculty_email,@faculty_firstname,@faculty_lastname,@faculty_dep)";
+                string qry = "INSERT INTO student(stud_username,stud_email,stud_password,stud_enroll_date,stud_firstname,stud_lastname,stud_dob) VALUES(@stud_username,@stud_email,@stud_password,@stud_enroll_date,@stud_firstname,@stud_lastname,@stud_dob)";
                 cmd = new SqlCommand(qry, conn);
-                cmd.Parameters.AddWithValue("faculty_username", txtname.Text);
-                cmd.Parameters.AddWithValue("faculty_password", txtpass.Text);
-                cmd.Parameters.AddWithValue("faculty_email", txtemail.Text);
-                cmd.Parameters.AddWithValue("faculty_firstname", txtfirstname.Text);
-                cmd.Parameters.AddWithValue("faculty_lastname", txtlastname.Text);
-                cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
+                cmd.Parameters.AddWithValue("stud_username", txtname.Text);
+              
+                cmd.Parameters.AddWithValue("stud_email", txtemail.Text);
+                cmd.Parameters.AddWithValue("stud_password", txtpass.Text);
+                cmd.Parameters.AddWithValue("stud_enroll_date", txtenroll.Text);
+                cmd.Parameters.AddWithValue("stud_firstname", txtfirstname.Text);
+                cmd.Parameters.AddWithValue("stud_lastname", txtlastname.Text);
+                cmd.Parameters.AddWithValue("stud_dob", txtdob.Text);
 
 
                 int res = cmd.ExecuteNonQuery();
