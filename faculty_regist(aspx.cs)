@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace result
 {
-    public partial class faculty_reg : System.Web.UI.Page
+    public partial class facultyreg : System.Web.UI.Page
     {
         SqlConnection conn;
         SqlCommand cmd;
@@ -44,31 +44,56 @@ namespace result
         }
 
 
+        //protected void fnbinddep()
+        //{
+        //    try
+        //    {
+        //        fn_ConnectDB();
+        //        String qry = "select faculty_dep from faculty";
+        //        cmd = new SqlCommand(qry, conn);
+        //        cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
+        //        sda = new SqlDataAdapter(cmd);
+        //        DataSet ds = new DataSet();
+        //        sda.Fill(ds);
+        //        ddldept.DataSource = ds;
+        //        ddldept.DataTextField = "faculty_dep";
+        //        ddldept.DataValueField = "faculty_dep";
+        //        ddldept.DataBind();
+
+        //        ddldept.Items.Insert(0, new ListItem("SELECT DEPARTMENT"));
+        //        conn.Close();
+       
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Response.Write(e.ToString());
+        //    }
+        //}
+         
+
         protected void fnbinddep()
         {
             try
             {
-                fn_ConnectDB();
-                String qry = "select faculty_dep from faculty";
-                cmd = new SqlCommand(qry, conn);
-                cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
-                sda = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                sda.Fill(ds);
-                ddldept.DataSource = ds;
-                ddldept.DataTextField = "faculty_dep";
-                ddldept.DataValueField = "faculty_dep";
-                ddldept.DataBind();
-
-                ddldept.Items.Insert(0, new ListItem("SELECT DEPARTMENT"));
-                conn.Close();
+                ddldept.Items.Add("select department");
+                ddldept.Items.Add("IT");
+                ddldept.Items.Add("CS");
+                ddldept.Items.Add("MB");
+                ddldept.Items.Add("BT");
+                ddldept.Items.Add("CHEM");
+                ddldept.Items.Add("ES");
 
             }
             catch (Exception e)
             {
                 Response.Write(e.ToString());
+
             }
+
+
         }
+
+
         protected void btn_reg_Click(object sender, EventArgs e)
         {
             try
@@ -82,7 +107,7 @@ namespace result
                 cmd.Parameters.AddWithValue("faculty_firstname", txtfirstname.Text);
                 cmd.Parameters.AddWithValue("faculty_lastname", txtlastname.Text);
                 cmd.Parameters.AddWithValue("faculty_dep", ddldept.SelectedValue);
-               
+
 
                 int res = cmd.ExecuteNonQuery();
                 if (res > 0)
