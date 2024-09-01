@@ -7,70 +7,71 @@
     <style type="text/css">
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            background: #f4f7fc;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 900px; /* Adjusted width for a better look on laptops */
-            padding: 30px;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            max-width: 500px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
             box-sizing: border-box;
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: scale(1.02);
         }
 
         h2 {
             color: #333;
             margin-bottom: 20px;
-            font-size: 28px; /* Adjusted font size */
+            font-size: 24px;
             text-align: center;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #555;
-            font-size: 16px; /* Adjusted font size */
+            font-size: 14px;
         }
 
         .form-group input[type="text"],
         .form-group input[type="password"],
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
             box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
         .form-group input[type="text"]:focus,
         .form-group input[type="password"]:focus,
         .form-group select:focus {
-            border-color: #007bff;
+            border-color: #0056b3;
             outline: none;
-            box-shadow: 0 0 8px rgba(0,123,255,0.2);
+        }
+
+        .form-group .text-danger {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
         }
 
         .form-group button {
@@ -79,54 +80,25 @@
             color: #ffffff;
             padding: 12px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 5px;
             width: 100%;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease;
         }
 
         .form-group button:hover {
             background-color: #0056b3;
-            transform: translateY(-2px);
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            .container {
-                padding: 20px;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            .form-group label {
-                font-size: 14px;
-            }
-
-            .form-group input[type="text"],
-            .form-group input[type="password"],
-            .form-group select {
-                font-size: 14px;
-            }
-
-            .form-group button {
-                font-size: 16px;
-            }
+        .form-group center {
+            margin-top: 20px;
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 20px;
-                height: auto; /* Allow body height to grow */
-            }
-
             .container {
-                width: 100%;
-                padding: 15px;
+                padding: 20px;
+                margin: 10px;
             }
 
             h2 {
@@ -154,42 +126,58 @@
         <div class="container">
             <h2><strong>Faculty Registration</strong></h2>
             <div class="form-group">
-                <label for="TextBox1">Username</label>
+                <label for="txtname">Username</label>
                 <asp:TextBox ID="txtname" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvUsername" runat="server" ControlToValidate="txtname" 
+                                             ErrorMessage="Username is required." CssClass="text-danger" 
+                                             Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div class="form-group">
-                <label for="TextBox2">Email</label>
+                <label for="txtemail">Email</label>
                 <asp:TextBox ID="txtemail" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtemail"
+                                                ErrorMessage="Please enter a valid email address."
+                                                ValidationExpression="^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$"
+                                                CssClass="text-danger" Display="Dynamic"></asp:RegularExpressionValidator>
             </div>
             <div class="form-group">
-                <label for="TextBox3">Password</label>
+                <label for="txtpass">Password</label>
                 <asp:TextBox ID="txtpass" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvPassword" runat="server" ControlToValidate="txtpass" 
+                                             ErrorMessage="Password is required." CssClass="text-danger" 
+                                             Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div class="form-group">
-                <label for="TextBox4">Firstname</label>
+                <label for="txtConfirmPassword">Confirm Password</label>
+                <asp:TextBox ID="txtConfirmPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                <asp:CompareValidator ID="cvPassword" runat="server" ControlToValidate="txtConfirmPassword"
+                                      ControlToCompare="txtpass" ErrorMessage="Passwords do not match."
+                                      CssClass="text-danger" Display="Dynamic"></asp:CompareValidator>
+            </div>
+            <div class="form-group">
+                <label for="txtfirstname">Firstname</label>
                 <asp:TextBox ID="txtfirstname" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvFirstname" runat="server" ControlToValidate="txtfirstname" 
+                                             ErrorMessage="Firstname is required." CssClass="text-danger" 
+                                             Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div class="form-group">
-                <label for="TextBox5">Lastname</label>
+                <label for="txtlastname">Lastname</label>
                 <asp:TextBox ID="txtlastname" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvLastname" runat="server" ControlToValidate="txtlastname" 
+                                             ErrorMessage="Lastname is required." CssClass="text-danger" 
+                                             Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div class="form-group">
-                <label for="DropDownList1">Department</label>
-                <asp:DropDownList ID="ddldept" runat="server" CssClass="form-control" AutoPostBack="True">
-                </asp:DropDownList>
+                <label for="ddldept">Department</label>
+                <asp:DropDownList ID="ddldept" runat="server" CssClass="form-control" AutoPostBack="True"></asp:DropDownList>
             </div>
-
-            <%--<div class="form-group">
-                <label for="TextBox7">Contact No.</label>
-                <asp:TextBox ID="txtcontact" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>--%>
-         
             <div class="form-group">
                 <center>
                 <asp:Button ID="btn_reg" runat="server" CssClass="btn" Text="Register" OnClick="btn_reg_Click" />
-                    <br />
-                    <br />
-                    <asp:Label ID="lblMsg" runat="server"></asp:Label>
+                <br />
+                <br />
+                <asp:Label ID="lblMsg" runat="server"></asp:Label>
                 </center>
             </div>
         </div>
