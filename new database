@@ -1,0 +1,128 @@
+CREATE TABLE [dbo].[faculty] (
+    [faculty_id]     INT           NOT NULL,
+    [first_name]     NVARCHAR (50) NULL,
+    [last_name]      NVARCHAR (50) NULL,
+    [gender]         NVARCHAR (50) NULL,
+    [dob]            DATE          NULL,
+    [email]          NVARCHAR (50) NULL,
+    [phone]          NVARCHAR (50) NULL,
+    [address]        NVARCHAR (50) NULL,
+    [bloodgroup]     NVARCHAR (50) NULL,
+    [password]       NVARCHAR (50) NULL,
+    [faculty_status] NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([faculty_id] ASC)
+);
+
+CREATE TABLE [dbo].[facultyimage] (
+    [faculty_id]    INT             NOT NULL,
+    [profile_image] VARBINARY (MAX) NULL,
+    CONSTRAINT [FK_facultyimage_ToTable] FOREIGN KEY ([faculty_id]) REFERENCES [dbo].[faculty] ([faculty_id])
+);
+
+CREATE TABLE [dbo].[class] (
+    [class_id]      INT           NOT NULL,
+    [class_name]    NVARCHAR (50) NULL,
+    [programme_id]  INT           NULL,
+    [class_year]    INT           NULL,
+    [class_section] NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([class_id] ASC),
+    CONSTRAINT [FK_class_ToTable] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id])
+);
+
+CREATE TABLE [dbo].[final_marks] (
+    [reg_no]                INT           NOT NULL,
+    [subject_code]          INT           NULL,
+    [programme_id]          INT           NULL,
+    [obtained_marks]        INT           NULL,
+    [ia_marks]              INT           NULL,
+    [total_marks]           INT           NULL,
+    [grade]                 NVARCHAR (50) NULL,
+    [credit]                INT           NULL,
+    [grade_point]           INT           NULL,
+    [grade_point_weightage] INT           NULL,
+    [result]                NVARCHAR (50) NULL,
+    CONSTRAINT [FK_final_internal_marks_ToTable] FOREIGN KEY ([subject_code]) REFERENCES [dbo].[subject] ([subject_code]),
+    CONSTRAINT [FK_final_internal_marks_ToTable_1] FOREIGN KEY ([reg_no]) REFERENCES [dbo].[student] ([reg_no]),
+    CONSTRAINT [FK_final_internal_marks_ToTable_2] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id])
+);
+
+CREATE TABLE [dbo].[first_internal_marks] (
+    [reg_no]         INT           NOT NULL,
+    [subject_code]   INT           NULL,
+    [programme_id]   INT           NULL,
+    [max_marks]      INT           NULL,
+    [min_marks]      INT           NULL,
+    [obtained_marks] INT           NULL,
+    [grade]          NVARCHAR (50) NULL,
+    [result]         NVARCHAR (50) NULL,
+    CONSTRAINT [FK_first_internal_marks_ToTable] FOREIGN KEY ([subject_code]) REFERENCES [dbo].[subject] ([subject_code]),
+    CONSTRAINT [FK_first_internal_marks_ToTable_1] FOREIGN KEY ([reg_no]) REFERENCES [dbo].[student] ([reg_no]),
+    CONSTRAINT [FK_first_internal_marks_ToTable_2] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id])
+);
+
+CREATE TABLE [dbo].[programme] (
+    [programme_id]       INT           NOT NULL,
+    [programme_name]     NVARCHAR (50) NULL,
+    [programme_duration] INT           NULL,
+    [programme_sem]      INT           NULL,
+    PRIMARY KEY CLUSTERED ([programme_id] ASC)
+);
+
+CREATE TABLE [dbo].[second_internal_marks] (
+    [reg_no]         INT           NOT NULL,
+    [subject_code]   INT           NULL,
+    [programme_id]   INT           NULL,
+    [max_marks]      INT           NULL,
+    [min_marks]      INT           NULL,
+    [obtained_marks] INT           NULL,
+    [grade]          NVARCHAR (50) NULL,
+    [result]         NVARCHAR (50) NULL,
+    CONSTRAINT [FK_second_internal_marks_ToTable] FOREIGN KEY ([subject_code]) REFERENCES [dbo].[subject] ([subject_code]),
+    CONSTRAINT [FK_second_internal_marks_ToTable_1] FOREIGN KEY ([reg_no]) REFERENCES [dbo].[student] ([reg_no]),
+    CONSTRAINT [FK_second_internal_marks_ToTable_2] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id])
+);
+
+CREATE TABLE [dbo].[student] (
+    [reg_no]         INT           NOT NULL,
+    [first_name]     NVARCHAR (50) NULL,
+    [last_name]      NVARCHAR (50) NULL,
+    [gender]         NVARCHAR (50) NULL,
+    [dob]            DATE          NULL,
+    [email]          NVARCHAR (50) NULL,
+    [phone]          NVARCHAR (50) NULL,
+    [address]        NVARCHAR (50) NULL,
+    [bloodgroup]     NVARCHAR (50) NULL,
+    [birth_place]    NVARCHAR (50) NULL,
+    [birth_district] NVARCHAR (50) NULL,
+    [pincode]        INT           NULL,
+    [password]       NVARCHAR (50) NULL,
+    [programme_id]   INT           NULL,
+    [class_id]       INT           NULL,
+    [joining_year]   INT           NULL,
+    [semester]       INT           NULL,
+    [status]         NVARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([reg_no] ASC),
+    CONSTRAINT [FK_student_ToTable] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id]),
+    CONSTRAINT [FK_student_ToTable_1] FOREIGN KEY ([class_id]) REFERENCES [dbo].[class] ([class_id])
+);
+
+CREATE TABLE [dbo].[studentimage] (
+    [reg_no]        INT             NOT NULL,
+    [profile_image] VARBINARY (MAX) NULL,
+    CONSTRAINT [FK_studentimage_ToTable] FOREIGN KEY ([reg_no]) REFERENCES [dbo].[student] ([reg_no])
+);
+
+CREATE TABLE [dbo].[subject] (
+    [subject_code]  INT           NOT NULL,
+    [subject_name]  NVARCHAR (50) NULL,
+    [subject_type]  NVARCHAR (50) NULL,
+    [subject_group] NVARCHAR (50) NULL,
+    [subject_sem]   INT           NULL,
+    [max_marks]     INT           NULL,
+    [min_marks]     INT           NULL,
+    [max_ia]        INT           NULL,
+    [programme_id]  INT           NULL,
+    PRIMARY KEY CLUSTERED ([subject_code] ASC),
+    CONSTRAINT [FK_subject_ToTable] FOREIGN KEY ([programme_id]) REFERENCES [dbo].[programme] ([programme_id])
+);
+
