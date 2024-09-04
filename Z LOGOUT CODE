@@ -1,0 +1,15 @@
+Logout code on button click event
+
+LOGOUT LOGIC
+
+ protected void btnlogout_Click(object sender, EventArgs e)
+ {
+     Session.Abandon();
+     Session.Clear();
+     Response.Redirect("~/admin_login.aspx");
+ }
+
+
+LOGOUT BUTTON DESIGN
+
+ <asp:Button ID="btnlogout" runat="server" OnClick="btnlogout_Click" Text="logout" />
