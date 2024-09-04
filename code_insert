@@ -1,0 +1,44 @@
+protected void btnRegister_Click(object sender, EventArgs e)
+{
+    try
+    {
+        fn_ConnectDB();
+        string query = "INSERT INTO student (reg_no, first_name, last_name, gender, dob, email, phone, address, bloodgroup, birth_place, birth_district, pincode, password, programme_id, class_id, joining_year, semester) " +
+                       "VALUES (@reg_no, @first_name, @last_name, @gender, @dob, @email, @phone, @address, @bloodgroup, @birth_place, @birth_district, @pincode, @password, @programme_id, @class_id, @joining_year, @semester)";
+
+        cmd = new SqlCommand(query, conn);
+
+        cmd.Parameters.AddWithValue("@reg_no", txtregno.Text);
+        cmd.Parameters.AddWithValue("@first_name", txtfirstname.Text);
+        cmd.Parameters.AddWithValue("@last_name", txtlastname.Text);
+        cmd.Parameters.AddWithValue("@programme_id", ddlprogrammeid.SelectedValue);
+        cmd.Parameters.AddWithValue("@class_id", ddlclassid.SelectedValue);
+        cmd.Parameters.AddWithValue("@email", txtemail.Text);
+        cmd.Parameters.AddWithValue("@password", txtpassword.Text);
+        cmd.Parameters.AddWithValue("@phone", txtphone.Text);
+        cmd.Parameters.AddWithValue("@gender", ddlgender.SelectedValue);
+        cmd.Parameters.AddWithValue("@dob", txtdob.Text);
+        cmd.Parameters.AddWithValue("@bloodgroup", txtbloodgroup.Text);
+        cmd.Parameters.AddWithValue("@address", txtaddress.Text);
+        cmd.Parameters.AddWithValue("@birth_place", txtbirthplace.Text);
+        cmd.Parameters.AddWithValue("@birth_district", txtbirthdistrict.Text);
+        cmd.Parameters.AddWithValue("@pincode", txtpincode.Text);
+        cmd.Parameters.AddWithValue("@joining_year", txtjoiningyear.Text);
+        cmd.Parameters.AddWithValue("@semester", txtsemester.Text);
+
+        int res = cmd.ExecuteNonQuery();
+        if (res > 0)
+        {
+            lblMessage.Text = "Inserted successfully";
+        }
+        else
+        {
+            lblMessage.Text = "Insert operation failed";
+        }
+    }
+    catch (Exception ex)
+    {
+        Response.Write(ex.Message);
+
+    }
+}
