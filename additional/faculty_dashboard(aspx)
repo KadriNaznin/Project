@@ -92,9 +92,9 @@
             </div>
 
             <div class="card">
-                <div class="card-title">Resources</div>
-                <p>Access important teaching resources.</p>
-                <button class="button" runat="server">Access Resources</button>
+                <div class="card-title">View Results</div>
+                <p>Click below to view student results.</p>
+                <button class="button" runat="server">View Results</button>
             </div>
         </div>
         <div class="footer">
