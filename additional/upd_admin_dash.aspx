@@ -137,10 +137,10 @@
                     <img src="https://photos.peopleimages.com/picture/202309/2925757-portrait-of-professional-muslim-woman-office-backdrop.-wearing-hijab.-religion-concept-fit_400_400.jpg" alt="Profile Picture" />
                     
                      <p>Role: Administrator</p>
-    <div class="info-item"><strong>Id:</strong> <%= Session["AdminId"] %></div> <!-- Displaying Admin ID -->
+    <div class="info-item"><strong>Id:</strong> <%= Session["AdminId"] %></div> 
     <div class="info-item"><strong>Name:</strong> <%= Session["FirstName"] %> <%= Session["LastName"] %></div>
     <div class="info-item"><strong>Email:</strong> <%= Session["UserEmail"] %></div>
-    <div class="info-item"><strong>Phone:</strong> <%= Session["PhoneNumber"] %></div> <!-- Displaying Phone Number -->
+    <div class="info-item"><strong>Phone:</strong> <%= Session["PhoneNumber"] %></div> 
                 </div>
             </div>
         </div>
