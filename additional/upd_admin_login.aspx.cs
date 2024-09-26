@@ -54,7 +54,7 @@ namespace newres
                     Session["LastName"] = reader["last_name"].ToString();
                     Session["AdminId"] = reader["admin_id"].ToString(); 
                     Session["PhoneNumber"] = reader["phone"].ToString(); 
-                    Response.Redirect("newprc.aspx");
+                    Response.Redirect("upd_admin_dash.aspx");
                 }
                 else
                 {
