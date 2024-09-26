@@ -126,6 +126,8 @@
                     <li><a href="Students.aspx">Students</a></li>
                     <li><a href="Results.aspx">Results</a></li>
                     <li><a href="ChangePassword.aspx">Change Password</a></li>
+                    <li><a href="Logout.aspx">Logout</a></li>
+
                 </ul>
             </div>
 
