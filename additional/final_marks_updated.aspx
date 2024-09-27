@@ -130,7 +130,7 @@
             <asp:TextBox ID="txtia_marks" runat="server" CssClass="form-control" placeholder="Enter Internal Assessment Marks" required="required" TextMode="Number"></asp:TextBox>
 
             <label for="total_marks" class="required">Total Marks:</label>
-            <asp:TextBox ID="txttotal_marks" runat="server" CssClass="form-control" placeholder="Enter Total Marks" required="required" TextMode="Number"></asp:TextBox>
+            <asp:TextBox ID="txttotal_marks" runat="server" CssClass="form-control" placeholder="Enter Total Marks" required="required" TextMode="Number" AutoPostBack="True" OnTextChanged="txttotal_marks_TextChanged"></asp:TextBox>
 
             <label for="grade" class="required">Grade:</label>
             <asp:TextBox ID="txtgrade" runat="server" CssClass="form-control" placeholder="Enter Grade" required="required"></asp:TextBox>
@@ -143,14 +143,9 @@
 
             <label for="grade_point_weightage" class="required">Grade Point Weightage:</label>
             <asp:TextBox ID="txtgrade_point_weightage" runat="server" CssClass="form-control" placeholder="Enter Grade Point Weightage" required="required" TextMode="Number"></asp:TextBox>
-
             <label for="result" class="required">Result:</label>
-            <asp:DropDownList ID="ddlresult" runat="server" CssClass="form-control" required="required">
-                <asp:ListItem Text="Select Result" Value="" />
-                <asp:ListItem Text="Pass" Value="Pass" />
-                <asp:ListItem Text="Fail" Value="Fail" />
-                <asp:ListItem Text="Incomplete" Value="Incomplete" />
-            </asp:DropDownList>
+            <asp:TextBox ID="txtreult" runat="server" CssClass="form-control" placeholder="Enter result" required="required" TextMode="Number"></asp:TextBox>
+
 
             <div class="form-footer">
                 <asp:Button ID="SubmitForm" runat="server" Text="Submit" CssClass="button" OnClick="SubmitForm_Click"  />
