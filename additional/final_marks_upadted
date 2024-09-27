@@ -122,7 +122,7 @@ namespace A_169
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    txtia_marks = (TextBox)reader[iamarks];
+                    txtia_marks.Text = reader[iamarks].ToString();
 
                 }
             }
@@ -137,13 +137,13 @@ namespace A_169
             try
             {
                 fn_ConnectDB();
-                string query = "SELECT (f.obtained_marks+s.obtained_marks) as iamarks FROM first_internal_marks f,second_internal_marks s Where f.subject_code=s.subject_code and reg_no=@reg_no";
+                string query = "SELECT obtained_marks,ia_marks FROM final_marks  Where reg_no=@reg_no ";
                 cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    txtia_marks = (TextBox)reader[iamarks];
+                    txttotal_marks.Text = txtobtained_marks.Text + txtia_marks.Text;
 
                 }
             }
@@ -151,6 +151,98 @@ namespace A_169
             {
                 Response.Write("Error: " + ex.Message);
             }
+        }
+
+        protected void txttotal_marks_TextChanged(object sender, EventArgs e)
+        {
+            int ttlmarks;
+            try
+            {
+                ttlmarks = Convert.ToInt32(txttotal_marks.Text);
+
+                if (ttlmarks >= 33)
+                {
+                    if (ttlmarks >= 85)
+                    {
+                        txtgrade.Text = "AA";
+                        txtgrade_point.Text = "4";
+                        txtcredit.Text = "4";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    else if (ttlmarks >=75 && ttlmarks <= 85)
+                    {
+                        txtgrade.Text = "AB";
+                        txtgrade_point.Text = "4";
+                        txtcredit.Text = "4";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    else if (ttlmarks >= 70 && ttlmarks <= 75)
+                    {
+                        txtgrade.Text = "BB";
+                        txtgrade_point.Text = "3";
+                        txtcredit.Text = "3";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    else if (ttlmarks >= 60 && ttlmarks <= 70)
+                    {
+                        txtgrade.Text = "BC";
+                        txtgrade_point.Text = "3";
+                        txtcredit.Text = "3";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+                        txtcredit.Text = "4";
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    else if (ttlmarks >= 45 && ttlmarks <= 60)
+                    {
+                        txtgrade.Text = "CC";
+                        txtgrade_point.Text = "2";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+                        txtcredit.Text = "2";
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    else if (ttlmarks >= 33 && ttlmarks <= 45)
+                    {
+                        txtgrade.Text = "CD";
+                        txtgrade_point.Text = "2";
+                        txtcredit.Text = "2";
+                        int gradePoint = int.Parse(txtgrade_point.Text);
+                        int gradePointWeightage = gradePoint * 2;
+
+                        txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+                    }
+                    txtreult.Text = "Pass";
+
+                }
+                else
+                {
+                    txtgrade.Text = "DD";
+                    txtgrade_point.Text = "1";
+                    txtcredit.Text = "1";
+                    int gradePoint = int.Parse(txtgrade_point.Text);
+                    int gradePointWeightage = gradePoint * 2;
+
+                    txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+
+                    txtreult.Text = "Fail";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+
         }
     }
     }
