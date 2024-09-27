@@ -52,8 +52,8 @@ namespace newres
                     Session["UserEmail"] = txtemail.Text;
                     Session["FirstName"] = reader["first_name"].ToString();
                     Session["LastName"] = reader["last_name"].ToString();
-                    Session["AdminId"] = reader["admin_id"].ToString(); 
-                    Session["PhoneNumber"] = reader["phone"].ToString(); 
+                    Session["AdminId"] = reader["admin_id"].ToString(); // Assuming 'id' is the name of the ID column
+                    Session["PhoneNumber"] = reader["phone"].ToString(); // Assuming 'phone_number' is the name of the phone column
                     Response.Redirect("upd_admin_dash.aspx");
                 }
                 else
