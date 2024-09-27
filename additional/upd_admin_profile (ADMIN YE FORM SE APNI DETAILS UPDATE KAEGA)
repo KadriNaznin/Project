@@ -1,0 +1,116 @@
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
+
+namespace newres
+{
+    public partial class upd_admin_profile : Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["UserEmail"] == null)
+            {
+                Response.Redirect("upd_admin_login.aspx");
+            }
+            else if (!IsPostBack)
+            {
+                LoadAdminDetails();
+            }
+        }
+
+        private void LoadAdminDetails()
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT first_name, last_name, email, phone FROM admin WHERE email = @Email";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Email", Session["UserEmail"].ToString());
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    txtFirstName.Text = reader["first_name"].ToString();
+                    txtLastName.Text = reader["last_name"].ToString();
+                    txtEmail.Text = reader["email"].ToString();
+                    txtPhone.Text = reader["phone"].ToString();
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateAdminDetails();
+        }
+
+       
+
+        private void UpdateAdminDetails()
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "UPDATE admin SET first_name=@FirstName, last_name=@LastName, email=@NewEmail, phone=@Phone WHERE email=@OldEmail";
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
+                cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
+                cmd.Parameters.AddWithValue("@NewEmail", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
+                cmd.Parameters.AddWithValue("@OldEmail", Session["UserEmail"].ToString());
+
+                cmd.ExecuteNonQuery();
+
+                if (txtEmail.Text != Session["UserEmail"].ToString())
+                {
+                    Session["UserEmail"] = txtEmail.Text;
+                }
+
+                lblMessage.Text = "Profile updated successfully."; 
+                lblMessage.Visible = true; 
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = "Error: " + ex.Message; 
+                lblMessage.Visible = true;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+
+
+        protected void fn_ConnectDB()
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["myconn"].ConnectionString;
+                conn = new SqlConnection(connectionString);
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+    }
+}
