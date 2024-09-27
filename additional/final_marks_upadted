@@ -1,0 +1,159 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace A_169
+{
+    public partial class final_marks : System.Web.UI.Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter sda;
+        public int iamarks;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+        protected void fn_ConnectDB()
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["myconn"].ConnectionString;
+                conn = new SqlConnection(connectionString);
+
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+        public void fndisdetails()
+        {
+            fn_ConnectDB();
+            string query = "SELECT programme_id,semester FROM student WHERE reg_no=@reg_no";
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                txtprogramme_id.Text = reader["programme_id"].ToString();
+                txtsem.Text= reader["semester"].ToString();
+               
+            }
+        }
+
+        protected void SubmitForm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "INSERT INTO final_marks(reg_no,subject_code,programme_id,obtained_marks,ia_marks,total_marks,grades,credit,grade_point,grade_point_weightage,result,semester) Values(@reg_no,@subject_code,@programme_id,@obtained_marks,@ia_marks,@total_marks,@grades,@credit,@grade_point,@grade_point_weightage,@result,@semester)";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("reg_no", txtreg_no.Text);
+                cmd.Parameters.AddWithValue("subject_code",ddlsubject_code.SelectedValue);
+                cmd.Parameters.AddWithValue("programme_id",txtprogramme_id.Text);
+                cmd.Parameters.AddWithValue("obtained_marks", txtobtained_marks.Text);
+                cmd.Parameters.AddWithValue("ia_marks", txtia_marks.Text);
+                cmd.Parameters.AddWithValue("total_marks", txttotal_marks.Text);
+                cmd.Parameters.AddWithValue("grades", txtgrade.Text);
+                cmd.Parameters.AddWithValue("credit", txtcredit.Text);
+                cmd.Parameters.AddWithValue("grade_point", txtgrade_point.Text);
+                cmd.Parameters.AddWithValue("result",ddlresult.SelectedValue);
+                cmd.Parameters.AddWithValue("semeseter", txtsem.Text);
+
+                int res = cmd.ExecuteNonQuery();
+                if (res > 0)
+                {
+                    lblMessage.Text = "Inserted successfully";
+                }
+                else
+                {
+                    lblMessage.Text = "Insert operation failed";
+                }
+            }
+
+            
+            catch (Exception ex)
+            {
+
+                Response.Write(ex.Message);
+            }
+
+        }
+
+        protected void txtsem_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT subject_code,subject_name FROM subject WHERE subject_sem=@sem";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@sem", txtsem.Text);
+                ddlsubject_code.DataSource = cmd.ExecuteReader();
+                ddlsubject_code.DataTextField = "subject_name";
+                ddlsubject_code.DataValueField = "subject_code";
+                ddlsubject_code.DataBind();
+                ddlsubject_code.Items.Insert(0, new ListItem("Select subject", ""));
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+
+        protected void ddlsubject_code_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT (f.obtained_marks+s.obtained_marks) as iamarks FROM first_internal_marks f,second_internal_marks s Where f.subject_code=s.subject_code and reg_no=@reg_no";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    txtia_marks = (TextBox)reader[iamarks];
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+
+        protected void txtobtained_marks_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT (f.obtained_marks+s.obtained_marks) as iamarks FROM first_internal_marks f,second_internal_marks s Where f.subject_code=s.subject_code and reg_no=@reg_no";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    txtia_marks = (TextBox)reader[iamarks];
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+    }
+    }
+
+
+}
