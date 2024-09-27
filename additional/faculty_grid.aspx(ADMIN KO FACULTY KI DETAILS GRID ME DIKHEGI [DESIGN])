@@ -1,0 +1,258 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="faculty_grid.aspx.cs" Inherits="newres.faculty_grid" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Faculty Grid</title>
+   <style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #eef2f7;
+        color: #333;
+        height: 100%;
+        font-size: 14px;
+    }
+
+    .layout {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        background-color: #1a1f36;
+        color: #fff;
+        width: 220px;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        font-size: 13px;
+    }
+
+    .sidebar h2 {
+        color: #ffcc00;
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .sidebar ul li {
+        margin-bottom: 10px;
+    }
+
+    .sidebar ul li a {
+        color: #d1d4da;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: block;
+        padding: 10px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        background-color: #1a1f36;
+    }
+
+    .sidebar ul li a:hover, .sidebar ul li a.active {
+        background-color: #ffcc00;
+        color: #1a1f36;
+    }
+
+    .content {
+        margin-left: 260px; /* Increased margin for more space */
+        padding: 20px;
+        flex-grow: 1;
+        background-color: #f9fafe;
+    }
+
+    h2 {
+        color: #333;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .gridview {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .gridview-header {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: #333;
+        text-align: left;
+        padding: 10px;
+    }
+
+    .gridview td, .gridview th {
+        padding: 10px;
+        border-bottom: 1px solid #e6e9ec;
+    }
+
+    .gridview td {
+        background-color: #ffffff;
+    }
+
+    .gridview .gridview-header {
+        background-color: #eef2f7;
+    }
+
+    .gridview .edit-row {
+        background-color: #ffe6e6;
+    }
+
+    .gridview .action-btn {
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        margin-right: 5px; /* Space between buttons */
+        display: inline-block; /* Ensure buttons are inline */
+        margin-bottom: 5px; /* Space below the button */
+    }
+
+    .edit-btn {
+        background-color: #ece75f; /* Yellow */
+        color: #ffffff;
+    }
+
+    .edit-btn:hover {
+        background-color: #e6b400; 
+    }
+
+    .delete-btn {
+        background-color: #ece75f; 
+        color: #ffffff;
+    }
+
+    .delete-btn:hover {
+        background-color: #e6b400; 
+    }
+
+    .update-btn {
+        background-color: #ece75f; 
+        color: #ffffff;
+    }
+
+    .update-btn:hover {
+        background-color: #e6b400; 
+    }
+
+    .cancel-btn {
+        background-color: #ece75f;
+        color: #ffffff;
+    }
+
+    .cancel-btn:hover {
+        background-color: #e6b400; 
+    }
+</style>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="layout">
+            <div class="sidebar">
+                <h2>Admin Panel</h2>
+                <ul>
+                    <li><a href="upd_admin_dash.aspx">Dashboard</a></li>
+                    <li><a href="faculty_grid.aspx" class="active">Faculty</a></li>
+                    <li><a href="courses.aspx">Courses & Subjects</a></li>
+
+                    <li><a href="student_grid.aspx">Students</a></li>
+                    <li><a href="Results.aspx">Results</a></li>
+                    <li><a href="change_admin_pass.aspx">Change Password</a></li>
+                    <li><a href="upd_admin_login.aspx">Logout</a></li>
+                </ul>
+            </div>
+
+            <div class="content">
+                <h2>Faculty Details</h2>
+              
+     <asp:GridView ID="gridviewfaculty" runat="server" AutoGenerateColumns="False" DataKeyNames="faculty_id"
+    OnRowEditing="gridviewfaculty_RowEditing" 
+    OnRowUpdating="gridviewfaculty_RowUpdating" 
+    OnRowCancelingEdit="gridviewfaculty_RowCancelingEdit" 
+    OnRowDeleting="gridviewfaculty_RowDeleting" 
+    CssClass="gridview" GridLines="None">
+    
+    <Columns>
+         <asp:BoundField DataField="faculty_id" HeaderText="Faculty ID" ReadOnly="True" SortExpression="faculty_id" Visible="false" />
+ 
+ <asp:TemplateField HeaderText="First Name">
+     <ItemTemplate>
+         <asp:Label ID="lblFirstName" runat="server" Text='<%# Eval("first_name") %>'></asp:Label>
+     </ItemTemplate>
+     <EditItemTemplate>
+         <asp:TextBox ID="txtFirstName" runat="server" Text='<%# Bind("first_name") %>'></asp:TextBox>
+     </EditItemTemplate>
+     <HeaderStyle CssClass="gridview-header" />
+ </asp:TemplateField>
+ 
+ <asp:TemplateField HeaderText="Last Name">
+     <ItemTemplate>
+         <asp:Label ID="lblLastName" runat="server" Text='<%# Eval("last_name") %>'></asp:Label>
+     </ItemTemplate>
+     <EditItemTemplate>
+         <asp:TextBox ID="txtLastName" runat="server" Text='<%# Bind("last_name") %>'></asp:TextBox>
+     </EditItemTemplate>
+     <HeaderStyle CssClass="gridview-header" />
+ </asp:TemplateField>
+
+ <asp:TemplateField HeaderText="Email">
+     <ItemTemplate>
+         <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("email") %>'></asp:Label>
+     </ItemTemplate>
+     <EditItemTemplate>
+         <asp:TextBox ID="txtEmail" runat="server" Text='<%# Bind("email") %>'></asp:TextBox>
+     </EditItemTemplate>
+     <HeaderStyle CssClass="gridview-header" />
+ </asp:TemplateField>
+
+ <asp:TemplateField HeaderText="Phone">
+     <ItemTemplate>
+         <asp:Label ID="lblPhone" runat="server" Text='<%# Eval("phone") %>'></asp:Label>
+     </ItemTemplate>
+     <EditItemTemplate>
+         <asp:TextBox ID="txtPhone" runat="server" Text='<%# Bind("phone") %>'></asp:TextBox>
+     </EditItemTemplate>
+          <HeaderStyle CssClass="gridview-header" />
+</asp:TemplateField>
+
+     <asp:TemplateField HeaderText="Status">
+     <ItemTemplate>
+         <asp:Label ID="lblstatus" runat="server" Text='<%# Eval("faculty_status") %>'></asp:Label>
+     </ItemTemplate>
+     <EditItemTemplate>
+         <asp:TextBox ID="txtstatus" runat="server" Text='<%# Bind("faculty_status") %>'></asp:TextBox>
+     </EditItemTemplate>
+     <HeaderStyle CssClass="gridview-header" />
+ </asp:TemplateField>
+        <asp:TemplateField HeaderText="Action">
+    <ItemTemplate>
+        <asp:LinkButton ID="EditLink" runat="server" CommandName="Edit" Text="Edit" CssClass="action-btn edit-btn"></asp:LinkButton>
+        <asp:LinkButton ID="DeleteLink" runat="server" CommandName="Delete" Text="Delete" CssClass="action-btn delete-btn"></asp:LinkButton>
+    </ItemTemplate>
+    <EditItemTemplate>
+        <asp:LinkButton ID="UpdateLink" runat="server" CommandName="Update" Text="Update" CssClass="action-btn update-btn"></asp:LinkButton>
+        <asp:LinkButton ID="CancelLink" runat="server" CommandName="Cancel" Text="Cancel" CssClass="action-btn cancel-btn"></asp:LinkButton>
+    </EditItemTemplate>
+    <HeaderStyle CssClass="gridview-header" />
+</asp:TemplateField>
+    </Columns>
+
+    <RowStyle CssClass="gridview-row" />
+    <AlternatingRowStyle BackColor="#ffffff" />
+    <EditRowStyle CssClass="edit-row" />
+</asp:GridView>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
