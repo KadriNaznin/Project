@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="newprc.aspx.cs" Inherits="newres.newprc" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="upd_admin_dash.aspx.cs" Inherits="newres.upd_admin_dash" %>
 
 
 <!DOCTYPE html>
