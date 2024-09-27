@@ -1,0 +1,159 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="courses.aspx.cs" Inherits="newres.courses" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Courses by Program</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #eef2f7;
+            color: #333;
+            height: 100%;
+            font-size: 14px;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #1a1f36;
+            color: #fff;
+            width: 220px;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            font-size: 13px;
+        }
+
+        .sidebar h2 {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            color: #d1d4da;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: block;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #1a1f36;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: #ffcc00;
+            color: #1a1f36;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 40px;
+            flex-grow: 1;
+            background: linear-gradient(120deg, #f6f6f6 30%, #fff 70%);
+        }
+
+        .content h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .dropdown-section, .courses-section {
+            margin-top: 20px;
+        }
+
+        .dropdown-section select {
+            padding: 10px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .courses-section table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .courses-section table th, .courses-section table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .courses-section table th {
+            background-color: #ffcc00;
+            color: #1a1f36;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h2>Faculty Panel</h2>
+                <ul>
+                    <li><a href="Dashboard.aspx">Dashboard</a></li>
+                    <li><a href="courses.aspx" class="active">Courses & Subjects</a></li>
+                    <li><a href="Students.aspx">Students</a></li>
+                    <li><a href="Results.aspx">Results</a></li>
+                    <li><a href="ChangePassword.aspx">Change Password</a></li>
+                    <li><a href="Logout.aspx">Logout</a></li>
+                </ul>
+            </div>
+
+            <!-- Main content -->
+            <div class="content">
+                <h1>Subjects</h1>
+
+                <!-- Dropdown to select Program -->
+                <div class="dropdown-section">
+                    <label for="ddlPrograms">Select Program:</label>
+                    <asp:DropDownList ID="ddlPrograms" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+
+                <!-- Dropdown to select Class -->
+                <div class="dropdown-section">
+                    <label for="ddlClasses">Select Class:</label>
+                    <asp:DropDownList ID="ddlClasses" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlClasses_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+
+                <!-- Dropdown to select Semester -->
+                <div class="dropdown-section">
+                    <label for="ddlSemesters">Select Semester:</label>
+                    <asp:DropDownList ID="ddlSemesters" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSemesters_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+
+                <!-- GridView to display subjects -->
+                <div class="courses-section">
+                    <asp:GridView ID="gvSubjects" runat="server" AutoGenerateColumns="false">
+                        <Columns>
+                            <asp:BoundField DataField="subject_code" HeaderText="Subject Code" />
+                            <asp:BoundField DataField="subject_name" HeaderText="Subject Name" />
+                        </Columns>
+                    </asp:GridView>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
