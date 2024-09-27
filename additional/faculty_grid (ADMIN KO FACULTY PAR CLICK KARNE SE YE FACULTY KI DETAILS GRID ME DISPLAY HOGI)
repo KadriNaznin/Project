@@ -1,0 +1,138 @@
+
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace newres
+{
+    public partial class faculty_grid : System.Web.UI.Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter sda;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                displayfacultydatа();
+            }
+        }
+
+        protected void fn_ConnectDB()
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["myconn"].ConnectionString;
+                conn = new SqlConnection(connectionString);
+
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Connection Error: " + ex.Message);
+            }
+        }
+
+        private void displayfacultydatа()
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT faculty_id, first_name, last_name, email, phone,faculty_status FROM faculty";
+                cmd = new SqlCommand(query, conn);
+                sda = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                sda.Fill(ds);
+                gridviewfaculty.DataSource = ds;
+                gridviewfaculty.DataBind();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+
+        protected void gridviewfaculty_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            gridviewfaculty.EditIndex = e.NewEditIndex;
+            displayfacultydatа(); 
+        }
+
+        protected void gridviewfaculty_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewRow row = gridviewfaculty.Rows[e.RowIndex];
+
+            string faculty_id = gridviewfaculty.DataKeys[e.RowIndex].Value.ToString(); // Use DataKeys to get faculty_id
+            string first_name = (row.FindControl("txtFirstName") as TextBox).Text;
+            string last_name = (row.FindControl("txtLastName") as TextBox).Text;
+            string email = (row.FindControl("txtEmail") as TextBox).Text;
+            string phone = (row.FindControl("txtPhone") as TextBox).Text;
+            string status = (row.FindControl("txtstatus") as TextBox).Text;
+
+            try
+            {
+                fn_ConnectDB();
+                string query = "UPDATE faculty SET first_name=@FirstName, last_name=@LastName, email=@Email, phone=@Phone , faculty_status=@FacultyStatus WHERE faculty_id=@FacultyID";
+                cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@FacultyID", faculty_id);
+                cmd.Parameters.AddWithValue("@FirstName", first_name);
+                cmd.Parameters.AddWithValue("@LastName", last_name);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Phone", phone);
+                cmd.Parameters.AddWithValue("@FacultyStatus", status);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            gridviewfaculty.EditIndex = -1; 
+            displayfacultydatа(); 
+        }
+
+        protected void gridviewfaculty_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            gridviewfaculty.EditIndex = -1; 
+            displayfacultydatа(); 
+        }
+
+        protected void gridviewfaculty_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string faculty_id = gridviewfaculty.DataKeys[e.RowIndex].Value.ToString();
+
+            try
+            {
+                fn_ConnectDB();
+                string query = "DELETE FROM faculty WHERE faculty_id=@FacultyID";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@FacultyID", faculty_id);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            displayfacultydatа(); 
+        }
+    }
+}
