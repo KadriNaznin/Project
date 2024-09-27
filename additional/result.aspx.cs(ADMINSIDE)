@@ -1,0 +1,154 @@
+using System;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace newres
+{
+    public partial class result : System.Web.UI.Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataReader dr;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                LoadPrograms();
+            }
+        }
+
+        protected void fn_ConnectDB()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["myconn"].ConnectionString;
+            conn = new SqlConnection(connectionString);
+            conn.Open();
+        }
+
+        protected void LoadPrograms()
+        {
+            fn_ConnectDB();
+            string qry = "SELECT programme_id, programme_name FROM programme";
+            cmd = new SqlCommand(qry, conn);
+            dr = cmd.ExecuteReader();
+            ddlPrograms.DataSource = dr;
+            ddlPrograms.DataTextField = "programme_name";
+            ddlPrograms.DataValueField = "programme_id";
+            ddlPrograms.DataBind();
+            ddlPrograms.Items.Insert(0, new ListItem("Select Program", "0"));
+            dr.Close();
+            conn.Close();
+        }
+
+        protected void ddlPrograms_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadClasses();
+            gvStudents.DataSource = null;
+            gvStudents.DataBind();
+        }
+
+        protected void LoadClasses()
+        {
+            fn_ConnectDB();
+            int programmeId = Convert.ToInt32(ddlPrograms.SelectedValue);
+            string qry = "SELECT class_id, class_name FROM class WHERE programme_id = @ProgrammeId";
+            cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@ProgrammeId", programmeId);
+            dr = cmd.ExecuteReader();
+            ddlClasses.DataSource = dr;
+            ddlClasses.DataTextField = "class_name";
+            ddlClasses.DataValueField = "class_id";
+            ddlClasses.DataBind();
+            ddlClasses.Items.Insert(0, new ListItem("Select Class", "0"));
+            dr.Close();
+            conn.Close();
+        }
+
+        protected void ddlClasses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSemesters();
+            gvStudents.DataSource = null;
+            gvStudents.DataBind();
+        }
+
+        protected void LoadSemesters()
+        {
+            ddlSemesters.Items.Clear();
+            ddlSemesters.Items.Add(new ListItem("Select Semester", "0"));
+
+            int programmeId = Convert.ToInt32(ddlPrograms.SelectedValue);
+            string qry = "SELECT programme_name FROM programme WHERE programme_id = @ProgrammeId";
+            fn_ConnectDB();
+            cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@ProgrammeId", programmeId);
+            dr = cmd.ExecuteReader();
+
+            if (dr.Read())
+            {
+                string programmeName = dr["programme_name"].ToString();
+                int semesterCount = programmeName.Contains("Bachelor") ? 6 : 4;
+
+                for (int i = 1; i <= semesterCount; i++)
+                {
+                    ddlSemesters.Items.Add(new ListItem(i.ToString()));
+                }
+            }
+            dr.Close();
+            conn.Close();
+        }
+
+        protected void ddlSemesters_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadStudents();
+        }
+
+        protected void LoadStudents()
+        {
+            fn_ConnectDB();
+            int classId = Convert.ToInt32(ddlClasses.SelectedValue);
+            int semester = Convert.ToInt32(ddlSemesters.SelectedValue);
+
+            string qry = @"
+            SELECT s.reg_no, 
+                   s.first_name, 
+                   s.last_name, 
+                   s.gender, 
+                   s.joining_year,
+                 s.programme_id,
+                    s.class_id
+            FROM student s
+            INNER JOIN class c ON s.class_id = c.class_id
+            INNER JOIN programme p ON s.programme_id = p.programme_id
+            WHERE s.class_id = @ClassId AND p.programme_sem = @Semester";
+
+            cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@ClassId", classId);
+            cmd.Parameters.AddWithValue("@Semester", semester);
+            dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                gvStudents.DataSource = dr;
+                gvStudents.DataBind();
+            }
+            else
+            {
+                gvStudents.DataSource = null;
+                gvStudents.DataBind(); // Clear the grid when no students are found.
+            }
+            dr.Close();
+            conn.Close();
+        }
+
+        protected void gvStudents_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ViewResult")
+            {
+                string reg_no = e.CommandArgument.ToString();
+                Response.Redirect("viewresult.aspx?reg_no=" + reg_no);
+            }
+        }
+    }
+}
