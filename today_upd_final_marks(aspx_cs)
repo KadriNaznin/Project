@@ -1,0 +1,245 @@
+using System;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Web.UI.WebControls;
+
+namespace newres
+{
+    public partial class final_marks : System.Web.UI.Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter sda;
+        public int iamarks;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(!IsPostBack)
+            {
+                ddlsubject_code_SelectedIndexChanged(sender, e);
+            }
+        }
+
+        protected void fn_ConnectDB()
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["myconn"].ConnectionString;
+                conn = new SqlConnection(connectionString);
+
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+
+        public void fndisdetails()
+        {
+            fn_ConnectDB();
+            string query = "SELECT programme_id,semester,class_id FROM student WHERE reg_no=@reg_no";
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                txtprogramme_id.Text = reader["programme_id"].ToString();
+                txtclass_id.Text = reader["class_id"].ToString();
+                txtsem.Text = reader["semester"].ToString();
+            }
+        }
+
+        protected void SubmitForm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "INSERT INTO final_marks(reg_no,subject_code,programme_id,obtained_marks,ia_marks,total_marks,grade,credit,grade_point,grade_point_weightage,result,semester) " +
+                               "Values(@reg_no,@subject_code,@programme_id,@obtained_marks,@ia_marks,@total_marks,@grades,@credit,@grade_point,@grade_point_weightage,@result,@semester)";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("reg_no", txtreg_no.Text);
+                cmd.Parameters.AddWithValue("subject_code", ddlsubject_code.SelectedValue);
+                cmd.Parameters.AddWithValue("programme_id", txtprogramme_id.Text);
+                cmd.Parameters.AddWithValue("obtained_marks", txtobtained_marks.Text);
+                cmd.Parameters.AddWithValue("ia_marks", txtia_marks.Text);
+                cmd.Parameters.AddWithValue("total_marks", txttotal_marks.Text);
+                cmd.Parameters.AddWithValue("grades", txtgrade.Text);
+                cmd.Parameters.AddWithValue("credit", txtcredit.Text);
+                cmd.Parameters.AddWithValue("grade_point", txtgrade_point.Text);
+                cmd.Parameters.AddWithValue("grade_point_weightage", txtgrade_point_weightage.Text);
+                cmd.Parameters.AddWithValue("result", txtreult.Text);
+                cmd.Parameters.AddWithValue("semester", txtsem.Text);
+
+                int res = cmd.ExecuteNonQuery();
+                lblMessage.Text = res > 0 ? "Inserted successfully" : "Insert operation failed";
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+
+        protected void txtsem_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT subject_code,subject_name FROM subject WHERE subject_sem=@sem and class_id=@class_id";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@sem", txtsem.Text);
+                cmd.Parameters.AddWithValue("@class_id", txtclass_id.Text);
+                SqlDataReader reader = cmd.ExecuteReader();
+                ddlsubject_code.DataSource = reader;
+                ddlsubject_code.DataTextField = "subject_name";
+                ddlsubject_code.DataValueField = "subject_code";
+                ddlsubject_code.DataBind();
+                ddlsubject_code.Items.Insert(0, new ListItem("Select subject", ""));
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+
+
+
+
+
+        protected void ddlsubject_code_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                fn_ConnectDB();
+                string query = "SELECT (f.obtained_marks + s.obtained_marks) / 2  as iamarks " +
+                               "FROM first_internal_marks f, second_internal_marks s " +
+                               "WHERE f.subject_code = s.subject_code AND f.reg_no = @reg_no and s.reg_no=@reg_no";
+                cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@reg_no", txtreg_no.Text);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    txtia_marks.Text = reader["iamarks"].ToString();
+                }
+                reader.Close();
+                CalculateTotalMarks();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error: " + ex.Message);
+            }
+        }
+
+        protected void txtobtained_marks_TextChanged(object sender, EventArgs e)
+        {
+            // Recalculate total marks when obtained marks are updated
+            CalculateTotalMarks();
+        }
+
+        private void CalculateTotalMarks()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtobtained_marks.Text) && !string.IsNullOrEmpty(txtia_marks.Text))
+                {
+                    int obtainedMarks = int.Parse(txtobtained_marks.Text);
+                    int iaMarks = int.Parse(txtia_marks.Text);
+
+                    int totalMarks = obtainedMarks + iaMarks;
+                    txttotal_marks.Text = totalMarks.ToString();
+
+                    // Call the grade calculation method after calculating total marks
+                    CalculateGradeAndResult();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error in calculating total marks: " + ex.Message);
+            }
+        }
+
+        protected void txttotal_marks_TextChanged(object sender, EventArgs e)
+        {
+            // This is no longer needed, as we calculate the total marks directly.
+        }
+
+        private void CalculateGradeAndResult()
+        {
+            try
+            {
+                int ttlmarks = Convert.ToInt32(txttotal_marks.Text);
+
+                if (ttlmarks >= 85)
+                {
+                    txtgrade.Text = "AA";
+                    txtgrade_point.Text = "4";
+                    txtcredit.Text = "4";
+                    txtreult.Text = "Pass";
+                }
+                else if (ttlmarks >= 75)
+                {
+                    txtgrade.Text = "AB";
+                    txtgrade_point.Text = "4";
+                    txtcredit.Text = "4";
+                    txtreult.Text = "Pass";
+                }
+                else if (ttlmarks >= 70)
+                {
+                    txtgrade.Text = "BB";
+                    txtgrade_point.Text = "3";
+                    txtcredit.Text = "3";
+                    txtreult.Text = "Pass";
+                }
+                else if (ttlmarks >= 60)
+                {
+                    txtgrade.Text = "BC";
+                    txtgrade_point.Text = "3";
+                    txtcredit.Text = "3";
+                    txtreult.Text = "Pass";
+                }
+                else if (ttlmarks >= 45)
+                {
+                    txtgrade.Text = "CC";
+                    txtgrade_point.Text = "2";
+                    txtcredit.Text = "2";
+                    txtreult.Text = "Pass";
+                }
+                else if (ttlmarks >= 33)
+                {
+                    txtgrade.Text = "CD";
+                    txtgrade_point.Text = "2";
+                    txtcredit.Text = "2";
+                    txtreult.Text = "Pass";
+                }
+                else
+                {
+                    txtgrade.Text = "DD";
+                    txtgrade_point.Text = "1";
+                    txtcredit.Text = "1";
+                    txtreult.Text = "Fail";
+                }
+
+                
+
+                int gradePoint = int.Parse(txtgrade_point.Text);
+                int gradePointWeightage = gradePoint * 2;
+                txtgrade_point_weightage.Text = gradePointWeightage.ToString();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error in calculating grade and result: " + ex.Message);
+            }
+        }
+
+        protected void txtreg_no_TextChanged(object sender, EventArgs e)
+        {
+            fndisdetails();
+        }
+    }
+}
