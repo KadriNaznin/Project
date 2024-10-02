@@ -1,0 +1,113 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace A_169
+{
+    public partial class fresult : System.Web.UI.Page
+    {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter sda;
+        public static String id;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!Page.IsPostBack)
+            {
+
+                if (Session["reg_no"] != null)
+                {
+                    id = Session["reg_no"].ToString();
+                    fnbindgrid();
+                }
+                else
+                {
+                    Response.Redirect("~/Result.aspx");
+                }
+            }
+
+        }
+        public void fnconnect()
+        {
+            try
+            {
+                string constr = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
+                conn = new SqlConnection(constr);
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+            }
+            catch (Exception e)
+            {
+                Response.Write(e.ToString());
+            }
+        }
+        public void fnbindgrid()
+        {
+            try
+            {
+                fnconnect();
+                string qry = "SELECT f.*,s.subject_name FROM final_marks f,subject s WHERE reg_no=@reg_no";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("reg_no", id);
+                sda = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                sda.Fill(ds);
+                gvStudents.DataSource = ds;
+                gvStudents.DataBind();
+                conn.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+        }
+        public void CalculateSGPAAndCGPA()
+        {
+            try
+            {
+                fnconnect();
+
+                string qry = "SELECT credit, grade_point_weightage FROM final_marks WHERE reg_no=@reg_no";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("reg_no", id);
+
+                sda = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                sda.Fill(ds);
+                double totalGradePoints = 0;
+                double totalCredits = 0;
+                foreach (DataRow row in ds.Tables[0].Rows)
+                {
+                    double credit = Convert.ToDouble(row["credit"]);
+                    double gradePoint = Convert.ToDouble(row["grade_point_weightage"]);
+                    totalGradePoints += credit * gradePoint;
+                    totalCredits += credit;
+                }
+                double sgpa = totalGradePoints / totalCredits;
+
+
+                lblSGPA.Text = sgpa.ToString("0.00");
+
+
+                lblCGPA.Text = sgpa.ToString("0.00");
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+        }
+
+    }
+}
